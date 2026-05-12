@@ -1,8 +1,8 @@
 ---
-title: mybrain
+title: MyBrain
 ---
 
-# mybrain
+# MyBrain
 
 Bem-vindo ao meu cérebro público — um espaço onde organizo e compartilho minhas anotações de estudo sobre engenharia de software, backend, cloud e tudo mais que estou aprendendo.
 
