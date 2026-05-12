@@ -1,3 +1,5 @@
+// @ts-ignore
+import langScript from "./scripts/language.inline"
 import styles from "./styles/languagetoggle.scss"
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
 import { classNames } from "../util/lang"
@@ -15,6 +17,7 @@ const LanguageToggle: QuartzComponent = ({ displayClass, fileData }: QuartzCompo
   )
 }
 
+LanguageToggle.afterDOMLoaded = langScript
 LanguageToggle.css = styles
 
 export default (() => LanguageToggle) satisfies QuartzComponentConstructor
