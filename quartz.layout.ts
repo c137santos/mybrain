@@ -39,7 +39,13 @@ export const defaultContentPageLayout: PageLayout = {
         { Component: Component.LanguageToggle() },
       ],
     }),
-    Component.Explorer(),
+    Component.Explorer({
+      filterFn: (node) => {
+        const slug = document.body?.dataset?.slug ?? ""
+        const otherLang = slug.startsWith("en/") ? "pt" : "en"
+        return node.slugSegment !== "tags" && node.slugSegment !== otherLang
+      },
+    }),
   ],
   right: [
     Component.Graph(),
@@ -64,7 +70,13 @@ export const defaultListPageLayout: PageLayout = {
         { Component: Component.LanguageToggle() },
       ],
     }),
-    Component.Explorer(),
+    Component.Explorer({
+      filterFn: (node) => {
+        const slug = document.body?.dataset?.slug ?? ""
+        const otherLang = slug.startsWith("en/") ? "pt" : "en"
+        return node.slugSegment !== "tags" && node.slugSegment !== otherLang
+      },
+    }),
   ],
   right: [],
 }

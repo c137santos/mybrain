@@ -30,6 +30,9 @@ export function pageResources(
   const contentIndexPath = joinSegments(baseDir, "static/contentIndex.json")
   const contentIndexScript = `const fetchData = fetch("${contentIndexPath}").then(data => data.json())`
 
+  const translationsPath = joinSegments(baseDir, "static/translations.json")
+  const translationsScript = `const fetchTranslations = fetch("${translationsPath}").then(data => data.json())`
+
   const resources: StaticResources = {
     css: [
       {
@@ -48,6 +51,12 @@ export function pageResources(
         contentType: "inline",
         spaPreserve: true,
         script: contentIndexScript,
+      },
+      {
+        loadTime: "beforeDOMReady",
+        contentType: "inline",
+        spaPreserve: true,
+        script: translationsScript,
       },
       ...staticResources.js,
     ],

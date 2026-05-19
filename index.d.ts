@@ -13,3 +13,6 @@ interface CustomEventMap {
 
 type ContentIndex = Record<FullSlug, ContentDetails>
 declare const fetchData: Promise<ContentIndex>
+
+type TranslationMap = Record<string, string>
+declare const fetchTranslations: Promise<TranslationMap>
