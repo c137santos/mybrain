@@ -24,7 +24,7 @@ When you start a new conversation, you start from nothing — and that's when th
 
 That's because you have attention relationships going from each token to the other that are positional, influencing the meaning of each individual token.
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-01-atencao-quadratica.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-01-atencao-quadratica.png|Diagram showing the quadratic growth of attention relationships as token count increases in the context window]]
 
 This means that **around 100k tokens** — regardless of whether you're using a 1 million or 200k context window — the LLM starts getting dumber. As you keep adding things to the same context window, it gets increasingly inaccurate until it starts making poor decisions.
 
@@ -32,7 +32,7 @@ So we want to size our tasks in a way that keeps them within the smart zone. Thi
 
 But how do you tackle big tasks? One way is to use **multi-phase plans**: break the enormous task into small sections to execute each part in the smart zone.
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-02-plano-multifasico.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-02-plano-multifasico.png|Multi-phase plan diagram breaking a large task into smaller phases, each kept within the LLM's smart zone]]
 
 And any developer worth their salt will look at this and think: "This is a loop." That's where the idea of **Ralph Wiggum** comes in — you specify the end goal and tell the AI: "Make a small change that gets us closer and closer to our destination."
 
@@ -51,19 +51,19 @@ When you clear the context, you go right back to the system prompt. That state i
 
 On **compacting**: Matt's personal preference is **not to compact**. He prefers the AI to behave like the character from *Memento*, clearing the context and starting fresh, because that state is predictable. The more compaction sediment accumulates, the less predictable the behavior becomes.
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-06-duas-restricoes.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-06-duas-restricoes.png|Slide summarizing the two key LLM constraints: quadratic attention and cross-session amnesia]]
 
 ---
 
 ## Workflow: From Idea to Execution
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-14-fluxo-prd-kanban.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-14-fluxo-prd-kanban.png|Complete workflow diagram: Idea → Grill Me → PRD → Kanban, with HITL and AFK stage markers]]
 
 ### Grill Me
 
 The first skill in the workflow is **"Grill Me"** — it relentlessly interviews the user about every aspect of the plan until reaching a shared understanding. It walks down each branch of the design tree, resolving dependencies one by one. For each question, it provides its recommended answer and asks questions one at a time.
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-07-grill-me-resultado.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-07-grill-me-resultado.png|Example output from a Grill Me session: shared understanding reached after a series of design questions]]
 
 The implicit idea Matt argues against here is the **specs to code** movement: write a specification document and turn it directly into code, ignoring the resulting code. In practice, this doesn't work because you need to keep a handle on the code. You need to understand what's in it and shape it, because the code is your battleground.
 
@@ -71,9 +71,9 @@ The goal of "Grill Me" is to reach a **shared understanding** (a concept from Fr
 
 The "Grill Me" can last a long time — 40, 80, even 100 questions. The result is a conversation history that works beautifully as an asset of the design concept being created. It can also work well in meetings: feed in a transcript and use it in a Q&A session.
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-08-grill-me-perguntas.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-08-grill-me-perguntas.png|Sample questions from a Grill Me interview session, walking through each branch of the design decision tree]]
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-04-token-count.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-04-token-count.png|Token count from a Grill Me session showing the context size resulting from the alignment process]]
 
 ### PRD
 
@@ -93,7 +93,7 @@ The PRD format includes:
 
 Matt **doesn't usually read the PRD** after it's written. His reasoning: what is he testing when he reads it? LLMs are excellent at summarization — he already reached alignment with the model during "Grill Me". Reviewing the PRD would just be checking the LLM's ability to summarize. The alignment already happened.
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-15-fora-do-escopo.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-15-fora-do-escopo.png|PRD slide listing items explicitly out of scope to prevent the AI from implementing them unnecessarily]]
 
 ### Dependency Board (Kanban)
 
@@ -101,27 +101,27 @@ After the PRD, the next step is not a sequential plan but a **dependency board**
 
 Key technique: **tracer bullets** / **vertical slices**.
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-10-tracer-bullets.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-10-tracer-bullets.png|Diagram explaining the tracer bullets concept: slices that cross all system layers to validate the full path early]]
 
 AI tends to work **horizontally** — implementing layer by layer: first everything related to the database, then the API, and only then the front end. The problem is you only get feedback at the end, when everything has already been built.
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-11-trabalho-horizontal.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-11-trabalho-horizontal.png|Diagram of AI's default horizontal pattern: implements database → API → front-end in sequence, with feedback only at the end]]
 
 The ideal is to work with **vertical slices** — small units of functionality that cross all the necessary layers. This allows continuous feedback from the earliest phases.
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-12-fatiamento-vertical.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-12-fatiamento-vertical.png|Vertical slicing diagram: each task spans all necessary layers to deliver a complete slice of functionality]]
 
 In practice: when splitting a PRD into tasks, independent issues are created based on these vertical slices.
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-09-kanban-board.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-09-kanban-board.png|Kanban board with tasks organized by dependencies, showing which ones can be executed in parallel]]
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-13-regras-fatiamento.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-13-regras-fatiamento.png|Rules for creating issues from vertical slicing: independence, appropriate size, and clear boundaries]]
 
 Preference for this model over a sequential plan:
 - A sequential plan forces linear execution — only one agent at a time.
 - The dependency-based model allows **parallelization**: multiple agents working simultaneously on unblocked tasks, structured as a directed acyclic graph (DAG).
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-18-grafo-dependencias.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-18-grafo-dependencias.png|Directed acyclic graph (DAG) of Kanban tasks showing blocking relationships and parallelization opportunities]]
 
 Two types of tasks in the AI era:
 - **HITL tasks (Human In The Loop)** — where a human needs to be present.
@@ -133,7 +133,7 @@ The alignment phase (planning) requires human intervention. The implementation o
 
 ## Ralph: The AFK Agent
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-03-zona-inteligente-resumo.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-03-zona-inteligente-resumo.png|Visual summary of the LLM smart zone vs. dumb zone, with the inflection point around 100k tokens]]
 
 **Ralph** is the agent that executes AFK tasks in a loop. The basic script (`once.sh`):
 
@@ -157,7 +157,7 @@ Ralph's prompt defines task prioritization criteria:
 
 Execution cycle: explore the repository → implement via TDD → run feedback loops → commit → move issue to `done/` or update with what was done.
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-16-resumo-task-qa.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-16-resumo-task-qa.png|Task → TDD implementation → human QA → new tasks cycle, showing the Ralph agent delivery loop]]
 
 ---
 
@@ -194,7 +194,7 @@ Reference: *A Philosophy of Software Design* by John Ousterhout.
 
 Without guidance, AI tends to create code in the "shallow" style — many small files, low cohesion, high dependency.
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-17-modulos-rasos.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-17-modulos-rasos.png|Shallow modules diagram: many small, interdependent files with a large exposed public surface]]
 
 **Deep modules**: simple interface (small public surface) + rich implementation (lots of encapsulated internal logic). Benefits:
 - You test the module as a whole, with a clear boundary
@@ -202,7 +202,7 @@ Without guidance, AI tends to create code in the "shallow" style — many small 
 - Callers deal with a simple API
 - AI feedback loops become much better
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-19-modulos-profundos.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-19-modulos-profundos.png|Deep modules diagram: small public interface with rich, encapsulated internal implementation]]
 
 In practice: in the PRD, clearly define which modules exist, which will be modified, which new modules will be created, and what the expected interface of each is.
 
@@ -238,7 +238,7 @@ In practice: Sonnet for implementation, Opus for review (review requires more re
 
 ## Sand Castle: From Sequential to Parallel
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-20-sand-castle.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-20-sand-castle.png|Sand Castle library architecture: Planner → Per-task sandboxes → Implementer agents → Merge agent]]
 
 TypeScript library for running AFK loops in a parallelized fashion. Flow:
 

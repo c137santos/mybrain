@@ -24,7 +24,7 @@ Quando você inicia uma nova conversa, começa do zero — e é quando o LLM fun
 
 Isso acontece porque existem relações de atenção que vão de cada token para o outro, e essas relações são posicionais, influenciando o significado de cada token individual.
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-01-atencao-quadratica.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-01-atencao-quadratica.png|Diagrama mostrando crescimento quadrático das relações de atenção conforme o número de tokens aumenta na janela de contexto]]
 
 Isso significa que **em torno de 100 mil tokens** — não importa se você está usando uma janela de contexto de 1 milhão ou 200 mil — o LLM começa a ficar cada vez mais burro. Conforme você continua adicionando coisas à mesma janela de contexto, ela fica cada vez mais imprecisa até tomar decisões ruins.
 
@@ -32,7 +32,7 @@ Então, queremos dimensionar nossas tarefas de forma que permaneçam dentro da z
 
 Mas como lidar com tarefas grandes? Uma maneira é usar **planos multifásicos**: dividir a tarefa enorme em pequenas seções para executar cada parte na zona inteligente.
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-02-plano-multifasico.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-02-plano-multifasico.png|Esquema de plano multifásico dividindo uma tarefa grande em fases menores, cada uma dentro da zona inteligente do LLM]]
 
 E qualquer desenvolvedor que se preze vai olhar para isso e pensar: "Isso é um loop." É por aqui que chega a ideia do **Ralph Wiggum** — basicamente, você especifica o objetivo final e diz à IA: "Faça uma pequena mudança que nos aproxime cada vez mais do nosso objetivo."
 
@@ -51,19 +51,19 @@ Quando você limpa o contexto, volta direto ao prompt do sistema. Esse estado é
 
 Sobre **compactação**: preferência pessoal do Matt é **não compactar**. Ele prefere que a IA se comporte como o personagem do filme "Amnésia", limpando o contexto e voltando ao início, porque esse estado é previsível. Quanto mais sedimentos de compactação acumulam, menos previsível fica o comportamento.
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-06-duas-restricoes.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-06-duas-restricoes.png|Slide resumindo as duas restrições dos LLMs: atenção quadrática e amnésia entre sessões]]
 
 ---
 
 ## Fluxo de trabalho: da ideia à execução
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-14-fluxo-prd-kanban.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-14-fluxo-prd-kanban.png|Fluxo completo do processo: Ideia → Grill Me → PRD → Kanban, com indicação das etapas HITL e AFK]]
 
 ### Grill Me
 
 A primeira skill do fluxo é o **"Grill Me"** — ela entrevista o usuário incessantemente sobre todos os aspectos do plano até chegar a um entendimento comum. Percorre cada ramo da árvore de design, resolvendo as dependências uma a uma. Para cada pergunta, fornece sua resposta recomendada e faz as perguntas uma de cada vez.
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-07-grill-me-resultado.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-07-grill-me-resultado.png|Exemplo de output de uma sessão Grill Me: entendimento compartilhado alcançado após série de perguntas sobre o design]]
 
 A ideia implícita que o Matt contesta aqui é o movimento **"specs to code"**: escrever um documento de especificação e transformá-lo diretamente em código, ignorando o código resultante. Na prática, isso não funciona porque você precisa controlar o código. Você precisa entender o que está nele e moldá-lo, porque o código é o seu campo de batalha.
 
@@ -71,9 +71,9 @@ O objetivo do "Grill Me" é alcançar um **entendimento compartilhado** (conceit
 
 O "Grill Me" pode durar bastante — 40, 80, até 100 perguntas. O resultado é um histórico de conversa que serve como excelente recurso para o conceito de design que está sendo criado. Também pode funcionar bem em reuniões: inserir a transcrição e usar em uma sessão de perguntas e respostas.
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-08-grill-me-perguntas.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-08-grill-me-perguntas.png|Exemplos das perguntas feitas pelo Grill Me durante a entrevista de design, cobrindo cada ramo da árvore de decisões]]
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-04-token-count.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-04-token-count.png|Contagem de tokens de uma sessão Grill Me mostrando o tamanho do contexto resultante do processo de alinhamento]]
 
 ### PRD
 
@@ -93,7 +93,7 @@ O formato do PRD inclui:
 
 Matt **não costuma ler o PRD** depois de escrito. O motivo: o que ele está testando ao lê-lo? Os LLMs são excelentes em resumir — ele já alcançou o mesmo alinhamento com o modelo durante o "Grill Me". Verificar o PRD seria apenas checar a capacidade do LLM de resumir. O alinhamento já aconteceu antes.
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-15-fora-do-escopo.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-15-fora-do-escopo.png|Slide do PRD listando itens explicitamente fora do escopo para evitar que a IA os implemente desnecessariamente]]
 
 ### Quadro de contenção de dependência (Kanban)
 
@@ -101,27 +101,27 @@ Depois do PRD, o próximo passo não é um plano sequencial, mas um **quadro de 
 
 Técnica importante: **rastreamento de balas** (tracer bullets) / **fatias verticais**.
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-10-tracer-bullets.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-10-tracer-bullets.png|Diagrama explicando o conceito de tracer bullets: fatias que atravessam todas as camadas do sistema para validar o caminho completo cedo]]
 
 A IA tende a trabalhar **horizontalmente** — implementar por camadas: primeiro tudo relacionado ao banco de dados, depois a API, e só então o front-end. O problema é que você só recebe feedback no final, quando tudo já foi construído.
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-11-trabalho-horizontal.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-11-trabalho-horizontal.png|Diagrama do padrão horizontal da IA: implementa banco de dados → API → front-end em sequência, com feedback tardio]]
 
 O ideal é trabalhar com **fatias verticais** — pequenas unidades de funcionalidade que atravessam todas as camadas necessárias. Isso permite obter feedback contínuo já nas primeiras fases.
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-12-fatiamento-vertical.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-12-fatiamento-vertical.png|Diagrama do fatiamento vertical: cada tarefa cobre todas as camadas necessárias para entregar uma fatia completa de funcionalidade]]
 
 Na prática: ao dividir um PRD em tarefas, cria-se problemas independentes baseados nessas fatias verticais.
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-09-kanban-board.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-09-kanban-board.png|Quadro Kanban com colunas de tarefas organizadas por dependências, mostrando quais podem ser executadas em paralelo]]
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-13-regras-fatiamento.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-13-regras-fatiamento.png|Regras para criação de issues a partir do fatiamento vertical: independência, tamanho adequado e fronteiras claras]]
 
 Preferência por esse modelo em vez de plano sequencial:
 - Um plano sequencial força execução linear — apenas um agente por vez.
 - O modelo baseado em dependências permite **paralelização**: vários agentes trabalhando simultaneamente nas tarefas desbloqueadas, estruturado como um grafo direcionado acíclico (DAG).
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-18-grafo-dependencias.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-18-grafo-dependencias.png|Grafo acíclico direcionado (DAG) das tarefas do Kanban mostrando as relações de bloqueio e oportunidades de paralelização]]
 
 Dois tipos de tarefas na era da IA:
 - **Tarefas HITL (Human In The Loop)** — onde o humano precisa estar presente.
@@ -133,7 +133,7 @@ A fase de alinhamento (planejamento) exige intervenção humana. A implementaç�
 
 ## Ralph: o agente AFK
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-03-zona-inteligente-resumo.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-03-zona-inteligente-resumo.png|Resumo visual da zona inteligente vs. zona burra do LLM, com o ponto de inflexão em torno de 100k tokens]]
 
 **Ralph** é o agente que executa as tarefas AFK em loop. O script básico (`once.sh`):
 
@@ -157,7 +157,7 @@ O prompt do Ralph define critérios de priorização de tarefas:
 
 Ciclo de execução: explorar o repositório → implementar via TDD → rodar ciclos de feedback → commit → mover issue para `done/` ou atualizar com o que foi feito.
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-16-resumo-task-qa.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-16-resumo-task-qa.png|Ciclo task → implementação via TDD → QA humano → novas tasks, mostrando o loop de entrega do agente Ralph]]
 
 ---
 
@@ -194,7 +194,7 @@ Referência: *A Philosophy of Software Design*, de John Ousterhout.
 
 Sem orientação, a IA tende a criar código no estilo "raso" — muitos arquivos pequenos, baixa coesão, alta dependência.
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-17-modulos-rasos.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-17-modulos-rasos.png|Diagrama de módulos rasos: muitos arquivos pequenos e interdependentes com alta exposição de superfície pública]]
 
 **Módulos profundos**: interface simples (pequena superfície pública) + implementação rica (muita lógica interna encapsulada). Benefícios:
 - Você testa o módulo como um todo, com limite claro
@@ -202,7 +202,7 @@ Sem orientação, a IA tende a criar código no estilo "raso" — muitos arquivo
 - Quem consome lida com uma API simples
 - Ciclos de feedback da IA ficam muito melhores
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-19-modulos-profundos.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-19-modulos-profundos.png|Diagrama de módulos profundos: interface pública pequena com implementação interna rica e encapsulada]]
 
 Na prática: no PRD, definir claramente quais módulos existem, quais serão modificados, quais novos módulos serão criados e qual a interface esperada de cada um.
 
@@ -238,7 +238,7 @@ Na prática: Sonnet para implementação, Opus para revisão (revisão exige mai
 
 ## Sand Castle: de sequencial para paralelo
 
-![[media/palestras/ai-engineer-workshop-matt-pocock/slide-20-sand-castle.png]]
+![[media/palestras/ai-engineer-workshop-matt-pocock/slide-20-sand-castle.png|Arquitetura da biblioteca Sand Castle: Planejador → Sandboxes por tarefa → Agentes implementadores → Agente de merge]]
 
 Biblioteca em TypeScript para rodar loops AFK de forma paralelizada. Fluxo:
 
